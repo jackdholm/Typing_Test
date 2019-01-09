@@ -1,2 +1,2 @@
 # Typing_Test
-Javascript typing test
+This is a typing test made in javascript with jquery
