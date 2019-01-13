@@ -35,6 +35,8 @@ $(document).ready(function()
 		CurrentIndex = 0;
 		WordCount = 0;
 		MistakeCount = 0;
+		$('#wordcount').text("Words: " + WordCount.toString());
+		$('#mistakecount').text("Mistakes: " + MistakeCount.toString());
 		$('#startbutton').prop('disabled', true);
 		$('#inputField').prop('disabled', false);
 		$('#inputField').focus();
@@ -61,10 +63,17 @@ $(document).ready(function()
 	
 	function complete()
 	{
-		$('#startbutton').prop('disabled', false);
+		$('#result').text("WPM: " + ((WordCount-MistakeCount)/(time/1000/60)).toString());
+		// Disable input
 		$('#inputField').prop('disabled', true);
 		$('#inputField').prop('value', "");
-		$('#result').text("WPM: " + (WordCount/(time/1000/60)).toString());
+		// Reset
+		CurrentIndex = 0;
+		WordCount = 0;
+		MistakeCount = 0;
+		
+		GoalWords = shuffle(GoalWords); // Re-shuffle words
+		$('#startbutton').prop('disabled', false);
 	}
 	
 	// Shuffles arrray using Fisher-Yates shuffle
