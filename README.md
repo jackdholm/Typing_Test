@@ -1,2 +1,2 @@
 # Typing_Test
-This is a typing test made in javascript with jquery
+This is a typing test using the 1000 most common english words.
