@@ -26,6 +26,8 @@ $(document).ready(function()
 			GoalWords = shuffle(GoalWords);
 			$('#startbutton').prop('disabled', false);
 			$('#wordField').text(GoalWords[0]);
+			$('#nextWord0').text(GoalWords[1]);
+			$('#nextWord1').text(GoalWords[2]);
 		}
 	};
 	$('#startbutton').prop('disabled', true);
@@ -64,6 +66,8 @@ $(document).ready(function()
 			}
 			CurrentIndex++;
 			$('#wordField').text(GoalWords[CurrentIndex]);
+			$('#nextWord0').text(GoalWords[CurrentIndex+1]);
+			$('#nextWord1').text(GoalWords[CurrentIndex+2]);
 			this.value = "";
 		}
 	});
@@ -82,6 +86,8 @@ $(document).ready(function()
 		
 		GoalWords = shuffle(GoalWords); // Re-shuffle words
 		$('#wordField').text(GoalWords[0]);
+		$('#nextWord0').text(GoalWords[1]);
+		$('#nextWord1').text(GoalWords[2]);
 		// Enable start
 		$('#startbutton').prop('disabled', false);
 	}
