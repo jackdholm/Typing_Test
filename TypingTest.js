@@ -7,6 +7,7 @@ var Time = 60000;
 var CurrentTime;
 var Filename = "words.txt";
 var Clock;
+var FirstType = Boolean(false);
 
 $(document).ready(function()
 {
@@ -14,7 +15,8 @@ $(document).ready(function()
 	WordCount = 0;
 	MistakeCount = 0;
 	var txt = '';
-	$('#inputField').prop('disabled', true);
+	$('#inputField').focus();
+	$('#resetButton').prop('disabled', true);
 	// Getting the list of words from the text file
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function()
@@ -24,45 +26,59 @@ $(document).ready(function()
 			txt = xmlhttp.responseText;
 			GoalWords = txt.split(" ");
 			GoalWords = shuffle(GoalWords);
-			$('#startbutton').prop('disabled', false);
+			$('#inputField').prop('disabled', false);
 			$('#wordField').text(GoalWords[0]);
 			$('#nextWord0').text(GoalWords[1]);
 			$('#nextWord1').text(GoalWords[2]);
 		}
 	};
-	$('#startbutton').prop('disabled', true);
+	$('#inputField').prop('disabled', true);
 	xmlhttp.open("GET",Filename,true);
 	xmlhttp.send();
 	
-	
-	$('#startbutton').on("click",function()
+	$('#resetButton').on('click', function()
+	{
+		$('#inputField').prop('disabled', false);
+		CurrentIndex = 0;
+		WordCount = 0;
+		MistakeCount = 0;
+		FirstType = false;
+		$('#inputField').focus();
+		$('#resetButton').prop('disabled', true);
+	});
+	// Starts the timer when the user starts typing
+	function startTest()
 	{
 		CurrentIndex = 0;
 		WordCount = 0;
 		MistakeCount = 0;
-		$('#wordcount').text("Words: " + WordCount.toString());
-		$('#mistakecount').text("Mistakes: " + MistakeCount.toString());
+		$('#wordCount').text("Words: " + WordCount.toString());
+		$('#mistakeCount').text("Mistakes: " + MistakeCount.toString());
 		// Disable start, enable text input
-		$('#startbutton').prop('disabled', true);
-		$('#inputField').prop('disabled', false);
-		$('#inputField').focus();
+		$('#resetButton').prop('disabled', true);
 		CurrentTime = Time/1000;
 		var timer = setTimeout(complete, Time);
 		setTime();
 		Clock = setInterval(setTime, 1000);
-	});
+	};
+	// when text field is changed
 	$('#inputField').on('input', function(e)
 	{
+		if (!FirstType)
+		{
+			FirstType = true;
+			startTest();
+		}
 		var temp = this.value;
 		if (temp[temp.length-1] == " ")
 		{
 			$('#test').text(temp.substr(0,temp.length-1));
 			WordCount++;
-			$('#wordcount').text("Words: " + WordCount.toString());
+			$('#wordCount').text("Words: " + WordCount.toString());
 			if (temp.substr(0,temp.length-1) != GoalWords[CurrentIndex])
 			{
 				MistakeCount++;
-				$('#mistakecount').text("Mistakes: " + MistakeCount.toString());
+				$('#mistakeCount').text("Mistakes: " + MistakeCount.toString());
 			}
 			CurrentIndex++;
 			$('#wordField').text(GoalWords[CurrentIndex]);
@@ -71,13 +87,14 @@ $(document).ready(function()
 			this.value = "";
 		}
 	});
-	
+	// Displays final WPM value
 	function complete()
 	{
 		$('#result').text("WPM: " + ((WordCount-MistakeCount)/(Time/1000/60)).toString());
 		clearInterval(Clock);
 		// Disable input
 		$('#inputField').prop('disabled', true);
+		$('#resetButton').prop('disabled', false);
 		$('#inputField').prop('value', "");
 		// Reset
 		CurrentIndex = 0;
@@ -89,7 +106,7 @@ $(document).ready(function()
 		$('#nextWord0').text(GoalWords[1]);
 		$('#nextWord1').text(GoalWords[2]);
 		// Enable start
-		$('#startbutton').prop('disabled', false);
+		$('#resetButton').prop('disabled', false);
 	}
 	
 	// Shuffles arrray using Fisher-Yates shuffle
