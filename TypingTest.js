@@ -15,6 +15,7 @@ $(document).ready(function()
 	WordCount = 0;
 	MistakeCount = 0;
 	var txt = '';
+	$('#inputField').prop('value','');
 	$('#inputField').focus();
 	$('#resetButton').prop('disabled', true);
 	// Getting the list of words from the text file
