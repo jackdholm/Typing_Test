@@ -10,6 +10,8 @@ var CurrentTime;
 var Filename = "file://words.txt";
 var Clock;
 var FirstType = Boolean(false);
+var Average = 0;
+var runs = 0;
 
 $(document).ready(function()
 {
@@ -103,7 +105,12 @@ $(document).ready(function()
 	// Displays final WPM value
 	function complete()
 	{
+		let score = (WordCount-MistakeCount)/(Time/1000/60);
 		$('#result').text("WPM: " + ((WordCount-MistakeCount)/(Time/1000/60)).toString());
+		Average = (Average * runs + score) / (runs++ + 1);
+		$('#average').prop('hidden', false);
+		$('#average').text("Average: " + Average.toString());
+		
 		clearInterval(Clock);
 		// Disable input
 		$('#inputField').prop('disabled', true);
@@ -111,7 +118,7 @@ $(document).ready(function()
 		$('#inputField').prop('value', "");
 		$('#timeField').text("00:00");
 
-		// Reset
+		// Reset	
 		CurrentIndex = 0;
 		WordCount = 0;
 		MistakeCount = 0;
