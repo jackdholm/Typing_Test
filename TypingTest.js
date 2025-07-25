@@ -109,6 +109,8 @@ $(document).ready(function()
 		$('#inputField').prop('disabled', true);
 		$('#resetButton').prop('disabled', false);
 		$('#inputField').prop('value', "");
+		$('#timeField').text("00:00");
+
 		// Reset
 		CurrentIndex = 0;
 		WordCount = 0;
@@ -122,7 +124,6 @@ $(document).ready(function()
 		$('#resetButton').prop('disabled', false);
 	}
 	
-	// Shuffles arrray using Fisher-Yates shuffle
 	function shuffle(array) 
 	{
 	  var n = array.length, temp, i;
